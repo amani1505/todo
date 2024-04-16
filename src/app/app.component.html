@@ -1,0 +1,48 @@
+<nav  class="bg-sky-400 p-4">
+<h1 class="font-bold text-white leading-loose">Todo</h1>
+</nav>
+
+<section class="p-5">
+ Todo List
+
+
+ <div>
+  <p>
+    {{ loggedInUser ? 'Logged in as ' + loggedInUser.name : 'Not logged in' }}
+  </p>
+
+  <div>
+    <input type="email" placeholder="Email" [(ngModel)]="email" class="border-2 border-sky-950"/>
+    <input type="password" placeholder="Password" [(ngModel)]="password" class="border-2 border-sky-950"/>
+    <input type="text" placeholder="Name" [(ngModel)]="name" class="border-2 border-sky-950" />
+    <input type="file"  name="logo " accept=".png, .jpg, .jpeg, .svg " (change)="onLogoSelectFile($event)"  />
+    <button (click)="upload()"> upload</button>
+
+    <button (click)="login(email, password)" class="bg-sky-500 mx-2 rounded text-white p-2">
+      Login
+    </button>
+
+    <button (click)="register(email, password, name)" class="bg-green-500 mx-2 rounded text-white p-2">
+      Register
+    </button>
+
+    <button (click)="logout()" class="bg-red-500 mx-2 rounded text-white p-2">
+      Logout
+    </button>
+  </div>
+</div>
+<div >
+  @for (task of tasks; track $index) {
+    <h1 class="font-bold">{{task.title}}</h1>
+    <p>{{task.body}}</p>
+  }
+
+</div>
+<div class="border-t my-3 p-3">
+  <h1 class="font-bold ">Create Tasks</h1>
+
+  <button class="bg-green-400 hover:bg-green-500 text-white p-2" (click)="create()">Create</button>
+
+</div>
+
+</section>
