@@ -53,7 +53,10 @@ export class AuthService {
   }
 
   updateVerification(userId: string, secret: string,): Observable<any> {
-    return from(account.updateVerification(userId, secret));
+    return from(account.updateVerification(userId, secret).then((authenticated)=>{
+      console.log("Verified",authenticated)
+      this._authenticated=true
+    }));
   }
   check(): Observable<boolean> {
     return from(account.get()).pipe(
