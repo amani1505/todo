@@ -11,29 +11,30 @@ import { AuthService } from '../Guard/auth.service';
 })
 export class VerifyAccountComponent {
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private authService: AuthService
-  ) { }
+    private _authService: AuthService,
+    private _activatedRoute: ActivatedRoute,
+    private _router: Router
+  ) { 
+    this.verifyAccount();
+  }
+  verifyAccount() {
+    const userId = this._activatedRoute.snapshot.queryParamMap.get('userId');
+    const secret = this._activatedRoute.snapshot.queryParamMap.get('secret');
 
-  ngOnInit(): void {
-    // Parse URL parameters
-    this.route.queryParams.subscribe(params => {
-      const userId = params['userId'];
-      const secret = params['secret'];
-  
-      // Call updateVerification function to verify the account
-      this.authService.updateVerification(userId, secret, ).subscribe({
+    if (userId && secret) {
+      this._authService.updateVerification(userId, secret).subscribe({
         next: () => {
-          // Verification successful, redirect to sign-in route
-          this.router.navigateByUrl('/sign-in');
+          // Redirect to the todo route after verification
+          this._router.navigate(['/todo']);
         },
         error: (error) => {
-          // Handle verification error
-          alert(`Failed to verify account: ${error}`);
-          // Optionally, redirect to an error page or display an error message
+          alert(`Error verifying account: ${error}`);
+          // Handle error as needed
         }
       });
-    });
+    } else {
+      alert('Missing userId or secret');
+      // Handle missing parameters error
+    }
   }
 }
