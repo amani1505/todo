@@ -3,7 +3,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { db, DB_ID, ID } from '../../../lib/appwrite';
+import { account, db, DB_ID, ID } from '../../../lib/appwrite';
 import { environment } from '../../../environment/environment';
 import { Permission, Role } from 'appwrite';
 import { AuthService } from '../../Auth/Guard/auth.service';
@@ -29,14 +29,13 @@ export class TodoComponent implements OnInit {
   doneTitle: string = ""
   ticket: any[] = []
   loading: boolean = true
-  loggedInUser: any = null;
-  email: string = '';
-  password: string = '';
+
   name: string = ''
   constructor(private _authService: AuthService, private _route: Router) { }
 
   ngOnInit(): void {
     this.getTasks()
+    
   }
 
   async getTasks(): Promise<void> {
@@ -53,21 +52,7 @@ export class TodoComponent implements OnInit {
 
 
 
-  async create() {
-    const user_id = this.loggedInUser.$id;
 
-    const task = await db.createDocument(DB_ID, environment.appwrite.taskCollectionId, ID.unique(), {
-      title: "Dancing ",
-      body: "Dancing All night"
-    }, [
-      Permission.write(Role.user(user_id)),
-      Permission.read(Role.any()),                  // Anyone can view this document,      // Writers can update this document
-      Permission.update(Role.user(user_id)),        // Admins can update this document
-      Permission.delete(Role.user(user_id))
-    ]);
-
-    alert("Task Saved Successfull")
-  }
 
   filter(status: string) {
 
@@ -90,7 +75,7 @@ export class TodoComponent implements OnInit {
         this.getTasks();
       })
         .catch((error) => {
-          alert(`Failed to update status: ${error}`);
+          alert(`Failed to update status:`);
           // Handle error
         });
     }

@@ -13,6 +13,10 @@ export const routes: Routes = [
                 path:"sign-in",
                 loadChildren:()=> import("./Auth/sigin/signin.routes")
             },
+            {
+                path:"sign-up",
+                loadChildren:()=> import("./Auth/signup/signup.routes")
+            }
            
         ]
     },

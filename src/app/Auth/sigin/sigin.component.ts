@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../Guard/auth.service';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-sigin',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule,RouterModule],
   templateUrl: './sigin.component.html',
   styleUrl: './sigin.component.scss'
 })
@@ -22,7 +22,7 @@ login(email:string,password:string){
       this._router.navigateByUrl(redirectURL);
     },
     error:(error)=>{
-      alert(`Error have Occured: ${error}`)
+      alert(`Please check your Email Or Password`)
     }
   })
 }

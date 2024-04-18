@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { catchError, from, Observable, of, switchMap, throwError } from 'rxjs';
-import { account, teams } from '../../../lib/appwrite';
+import { account, ID, teams } from '../../../lib/appwrite';
 import { UserService } from '../Users/user.service';
 
 @Injectable({
@@ -34,6 +34,12 @@ export class AuthService {
       })
     );
   }
+  async signup(email: string, password: string, name: string) {
+      const user = await account.create(ID.unique(), email, password, name,)
+     await account.createVerification("")
+      this.signIn(email, password);
+  
+     }
   async signOut(): Promise<Observable<any>> {
     localStorage.removeItem('accessToken');
 
