@@ -52,10 +52,8 @@ export class AuthService {
     return of(true);
   }
 
-  updateVerification(userId: string, secret: string, expire: string): Observable<any> {
-    // Call Appwrite API to update verification status
-    const url = `${environment.appwrite.endpoint}/account/updateVerification?userId=${userId}&secret=${secret}&expire=${expire}`;
-    return this._httpClient.post(url, {});
+  updateVerification(userId: string, secret: string,): Observable<any> {
+    return from(account.updateVerification(userId, secret));
   }
   check(): Observable<boolean> {
     return from(account.get()).pipe(
