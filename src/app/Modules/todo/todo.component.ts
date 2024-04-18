@@ -6,11 +6,13 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { db, DB_ID, ID } from '../../../lib/appwrite';
 import { environment } from '../../../environment/environment';
 import { Permission, Role } from 'appwrite';
+import { AuthService } from '../../Auth/Guard/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-todo',
   standalone: true,
-  imports: [FormsModule, NgxSkeletonLoaderModule, NgOptimizedImage,CdkDropListGroup, CdkDropList, CdkDrag],
+  imports: [FormsModule, NgxSkeletonLoaderModule, NgOptimizedImage, CdkDropListGroup, CdkDropList, CdkDrag],
   templateUrl: './todo.component.html',
   styleUrl: './todo.component.scss'
 })
@@ -26,11 +28,12 @@ export class TodoComponent implements OnInit {
   progressTitle: string = ""
   doneTitle: string = ""
   ticket: any[] = []
-  loading:boolean = true
+  loading: boolean = true
   loggedInUser: any = null;
   email: string = '';
   password: string = '';
   name: string = ''
+  constructor(private _authService: AuthService, private _route: Router) { }
 
   ngOnInit(): void {
     this.getTasks()
@@ -38,15 +41,9 @@ export class TodoComponent implements OnInit {
 
   async getTasks(): Promise<void> {
     try {
-      // Ensure authentication before fetching tasks
-      // if (!this.loggedInUser) {
-      //   throw new Error('User not authenticated');
-      // }
-
-      // Fetch tasks
       this.ticket = (await db.listDocuments(DB_ID, environment.appwrite.taskCollectionId)).documents;
       this.loading = false
-     
+
     } catch (error) {
       alert(`Failed to fetch tasks: ${error}`);
       this.loading = false
@@ -58,7 +55,7 @@ export class TodoComponent implements OnInit {
 
   async create() {
     const user_id = this.loggedInUser.$id;
-   
+
     const task = await db.createDocument(DB_ID, environment.appwrite.taskCollectionId, ID.unique(), {
       title: "Dancing ",
       body: "Dancing All night"
@@ -73,7 +70,7 @@ export class TodoComponent implements OnInit {
   }
 
   filter(status: string) {
-  
+
     return this.ticket.filter(m => m.status == status)
   }
   onDrop(event: CdkDragDrop<any[]>, status: string) {
@@ -90,14 +87,14 @@ export class TodoComponent implements OnInit {
       );
       db.updateDocument(droppedItem.$databaseId, droppedItem.$collectionId, droppedItem.$id, { status: status }).then(() => {
         alert('Status updated successfully.');
-        this.getTasks(); 
+        this.getTasks();
       })
-      .catch((error) => {
-        alert(`Failed to update status: ${error}`);
-        // Handle error
-      });
+        .catch((error) => {
+          alert(`Failed to update status: ${error}`);
+          // Handle error
+        });
     }
-   
+
 
   }
   onClick(status: string) {
@@ -113,8 +110,6 @@ export class TodoComponent implements OnInit {
 
   }
   async submit(status: string) {
-   
-
     let title: string;
     let updateFlag: boolean;
 
@@ -147,6 +142,12 @@ export class TodoComponent implements OnInit {
       Permission.delete(Role.any())
     ]);
     this.getTasks()
+
+  }
+  signout() {
+    this._authService.signOut().then(() => {
+      this._route.navigateByUrl('/sign-in');
+    })
 
   }
 }

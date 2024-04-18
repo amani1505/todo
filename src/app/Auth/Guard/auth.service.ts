@@ -29,12 +29,19 @@ export class AuthService {
       switchMap(user => {
         this._userService.user = user;
         this._authenticated = true;
-    
+
         return of(true); // Emit true to indicate successful sign-in
       })
     );
   }
+  async signOut(): Promise<Observable<any>> {
+    localStorage.removeItem('accessToken');
 
+    await account.deleteSession('current');
+    this._userService.user = null;
+    this._authenticated = false;
+    return of(true);
+  }
   check(): Observable<boolean> {
     return from(account.get()).pipe(
       switchMap(user => {
@@ -43,7 +50,7 @@ export class AuthService {
         return of(true);
       }),
       catchError(error => {
-        alert(`User not authenticated: ${error}`);
+        alert(`User not authenticated`);
         return of(false);
       })
     );
