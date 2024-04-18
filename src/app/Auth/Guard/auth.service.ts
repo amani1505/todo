@@ -35,9 +35,10 @@ export class AuthService {
     );
   }
   async signup(email: string, password: string, name: string) {
-      const user = await account.create(ID.unique(), email, password, name,)
-     await account.createVerification("")
-      this.signIn(email, password);
+      const user = await account.create(ID.unique(), email, password, name,);
+      await account.createEmailSession(email, password)
+     await account.createVerification("https://todo-project-one.netlify.app/sign-in")
+    
   
      }
   async signOut(): Promise<Observable<any>> {
