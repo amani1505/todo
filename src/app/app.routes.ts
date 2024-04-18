@@ -16,6 +16,8 @@ export const routes: Routes = [
             {
                 path:"sign-up",
                 loadChildren:()=> import("./Auth/signup/signup.routes")
+            },{
+                path:"verify-account",loadChildren:()=> import("./Auth/verify-account/verify-account.routes")
             }
            
         ]

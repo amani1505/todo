@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { catchError, from, Observable, of, switchMap, throwError } from 'rxjs';
 import { account, ID, teams } from '../../../lib/appwrite';
 import { UserService } from '../Users/user.service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environment/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +11,7 @@ import { UserService } from '../Users/user.service';
 export class AuthService {
   private _authenticated: boolean = false;
 
-  constructor(private _userService: UserService) { }
+  constructor(private _userService: UserService, private _httpClient:HttpClient) { }
 
   set token(token: any) {
     localStorage.setItem('accessToken', token);
@@ -37,7 +39,7 @@ export class AuthService {
   async signup(email: string, password: string, name: string) {
       const user = await account.create(ID.unique(), email, password, name,);
       await account.createEmailSession(email, password)
-     await account.createVerification("https://todo-project-one.netlify.app/sign-in")
+     await account.createVerification("https://todo-project-one.netlify.app/verify-account")
     
   
      }
@@ -48,6 +50,12 @@ export class AuthService {
     this._userService.user = null;
     this._authenticated = false;
     return of(true);
+  }
+
+  updateVerification(userId: string, secret: string, expire: string): Observable<any> {
+    // Call Appwrite API to update verification status
+    const url = `${environment.appwrite.endpoint}/account/updateVerification?userId=${userId}&secret=${secret}&expire=${expire}`;
+    return this._httpClient.post(url, {});
   }
   check(): Observable<boolean> {
     return from(account.get()).pipe(
