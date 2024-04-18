@@ -1,1 +1,5 @@
-<p>sigin works!</p>
+<input type="email" placeholder="Email" [(ngModel)]="email" class="border-2 border-sky-950"/>
+<input type="password" placeholder="Password" [(ngModel)]="password" class="border-2 border-sky-950"/>
+<button (click)="login(email, password)" class="bg-sky-500 mx-2 rounded text-white p-2">
+    Login
+  </button>
