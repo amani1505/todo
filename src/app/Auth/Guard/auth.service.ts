@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { from, Observable, of, switchMap, throwError } from 'rxjs';
+import { catchError, from, Observable, of, switchMap, throwError } from 'rxjs';
 import { account, teams } from '../../../lib/appwrite';
 import { UserService } from '../Users/user.service';
 
@@ -36,7 +36,16 @@ export class AuthService {
   }
 
   check(): Observable<boolean> {
-  
-    return of(this._authenticated);
+    return from(account.get()).pipe(
+      switchMap(user => {
+        this._userService.user = user;
+        this._authenticated = true;
+        return of(true);
+      }),
+      catchError(error => {
+        alert(`User not authenticated: ${error}`);
+        return of(false);
+      })
+    );
   }
 }

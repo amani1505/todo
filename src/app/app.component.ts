@@ -16,8 +16,6 @@ import {CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, DragDropModule, mov
   styleUrl: './app.component.scss'
 })
 export class AppComponent  {
- 
-
 
 
 }
