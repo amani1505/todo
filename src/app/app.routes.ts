@@ -1,5 +1,4 @@
-import { Routes, CanActivateFn } from '@angular/router';
-import { SiginComponent } from './Auth/sigin/sigin.component';
+import { Routes } from '@angular/router';
 import { AuthGuard } from './Auth/Guard/auth.guard';
 
 export const routes: Routes = [
@@ -16,8 +15,22 @@ export const routes: Routes = [
             {
                 path:"sign-up",
                 loadChildren:()=> import("./Auth/signup/signup.routes")
-            },{
-                path:"verify-account",loadChildren:()=> import("./Auth/verify-account/verify-account.routes")
+            },
+            {
+                path:"verify-account",
+                loadChildren:()=> import("./Auth/verify-account/verify-account.routes")
+            },
+            {
+                path:"forget-password",
+                loadChildren:() => import("./Auth/forgot-password/forgot-password.routes")
+            },
+            {
+                path:"reset-password",
+                loadChildren:() => import("./Auth/reset-password/reset-password.routes")
+            },
+            {
+                path:"check-email",
+                loadChildren:() => import("./Auth/check-email/check-email.routes")
             }
            
         ]

@@ -25,7 +25,6 @@ export class VerifyAccountComponent {
     if (userId && secret) {
       this._authService.updateVerification(userId, secret).subscribe({
         next: () => {
-          console.log("Verified Well")
           // Redirect to the todo route after verification
           this._router.navigate(['/todo']);
         },

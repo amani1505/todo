@@ -19,7 +19,7 @@ export class SignupComponent {
   constructor(private _authService:AuthService,private _router:Router){}
   signup(email:string,password:string,name:string){
   this._authService.signup(email,password,name).then(()=>{
-    this._router.navigateByUrl('/sign-in')
+    this._router.navigateByUrl('/check-email')
 
   })
   }

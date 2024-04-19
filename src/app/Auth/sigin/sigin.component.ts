@@ -18,11 +18,12 @@ constructor(private _authService:AuthService, private _activatedRoute: Activated
 login(email:string,password:string){
   this._authService.signIn(email,password).subscribe({
     next:(response)=>{
+    
       const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/signed-in-redirect';
       this._router.navigateByUrl(redirectURL);
     },
     error:(error)=>{
-      alert(`Please check your Email Or Password`)
+      alert(error)
     }
   })
 }
