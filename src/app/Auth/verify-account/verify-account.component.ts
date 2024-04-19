@@ -17,6 +17,7 @@ export class VerifyAccountComponent {
   ) { 
     this.verifyAccount();
   }
+
   verifyAccount() {
     const userId = this._activatedRoute.snapshot.queryParamMap.get('userId');
     const secret = this._activatedRoute.snapshot.queryParamMap.get('secret');
@@ -24,6 +25,7 @@ export class VerifyAccountComponent {
     if (userId && secret) {
       this._authService.updateVerification(userId, secret).subscribe({
         next: () => {
+          console.log("Verified Well")
           // Redirect to the todo route after verification
           this._router.navigate(['/todo']);
         },

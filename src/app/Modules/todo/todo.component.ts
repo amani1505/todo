@@ -56,7 +56,6 @@ export class TodoComponent implements OnInit {
 
 
   filter(status: string) {
-
     return this.ticket.filter(m => m.status == status)
   }
   onDrop(event: CdkDragDrop<any[]>, status: string) {

@@ -54,8 +54,12 @@ export class AuthService {
 
   updateVerification(userId: string, secret: string,): Observable<any> {
     return from(account.updateVerification(userId, secret).then((authenticated)=>{
-      console.log("Verified",authenticated)
+    
       this._authenticated=true
+
+    }).catch((e)=>{
+      alert('unsuccessfull verification')
+      this._authenticated=false
     }));
   }
   check(): Observable<boolean> {
